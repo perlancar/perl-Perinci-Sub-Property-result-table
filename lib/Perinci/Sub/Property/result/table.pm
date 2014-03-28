@@ -1,4 +1,4 @@
-package Perinci::Sub::Result::Table;
+package Perinci::Sub::Property::result::table;
 
 use 5.010001;
 use strict;
@@ -11,26 +11,32 @@ use warnings;
 
 In function L<Rinci> metadata:
 
- result_table => {
-     summary => "Employee's' current salary",
-     fields  => {
-         name => {
-             summary => "Employee's name",
-             schema  => 'str*',
-             pos     => 0,
+ result => {
+     table => {
+         spec => {
+             summary => "Employee's' current salary",
+             fields  => {
+             name => {
+                 summary => "Employee's name",
+                 schema  => 'str*',
+                 pos     => 0,
+             },
+             position => {
+                 summary => "Employee's current position",
+                 schema  => 'str*',
+                 pos     => 1,
+             },
+             salary => {
+                 summary => "Employee's current monthly salary",
+                 schema  => 'float*',
+                 pos     => 2,
+             },
          },
-         position => {
-             summary => "Employee's current position",
-             schema  => 'str*',
-             pos     => 1,
-         },
-         salary => {
-             summary => "Employee's current monthly salary",
-             schema  => 'float*',
-             pos     => 2,
-         },
+         # allow_extra_fields => 1, # whether to allow extra fields
+         #
      },
- },
+     ...
+ }
 
 
 =head1 DESCRIPTION
