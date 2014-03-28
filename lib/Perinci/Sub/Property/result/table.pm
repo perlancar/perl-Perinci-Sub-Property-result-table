@@ -28,12 +28,34 @@ declare_property(
                 last if $meta->{result_naked};
                 $self->select_section('after_call_after_res_validation');
                 $self->push_lines('# add result_format_options from result/table hints');
-                $self->push_lines('unless ($_w_res->[3] && $_w_res->[3]{result_format_options}) {');
+                $self->push_lines('{');
                 $self->indent;
                 $self->push_lines(
-                    # this is a local variable, so we don't use add_var() or even _w_ prefix
-                    'my $rfo = {};',
-                    '$_w_res->[3]{result_fomat_options} = {text=>$rfo, "text-pretty"=>$rfo};',
+                    # we are in a local block, so no need to use _w_ prefixes
+                    # for vars or even use add_var()
+                    'my $fields;',
+                    'last unless ref($_w_res->[2]) eq "ARRAY";',
+                    'my $frow = $_w_res->[2][0];', # deduce type from first row
+                    'if (ref($frow) eq "ARRAY" && $_w_res->[3]{"table.fields"}) {',
+                    '    $fields = $_w_res->[3]{"table.fields"};',
+                    '} elsif (ref($frow) eq "HASH") {',
+                    '    $fields = [keys %$frow];', # XXX should we check from several/all rows to collect more complete keys?
+                    '}',
+                    'last unless $fields;',
+                    'my $tablespec = '.$self->{_args}{meta_name}.'->{result}{table}{spec} or last;',
+                    'my $tct = {};',
+                    'for (@$fields) {',
+                    '    next if defined($tct->{$_});',
+                    '    my $sch = $tablespec->{fields}{$_}{schema} or next;', # field is unknown in table spec
+                    '    my $type = ref($sch) eq "ARRAY" ? $sch->[0] : $sch;',
+                    '    $type =~ s/\\*$//;',
+                    '    $tct->{$_} = $type;',
+                    '}',
+                    'my $tco = [sort {($tablespec->{fields}{$a}{pos} // 9999) <=> ($tablespec->{fields}{$b}{pos} // 9999)} @$fields];',
+                    'my $rfo = {table_column_orders=>[$tco], table_column_types=>[$tct]};',
+                    '$_w_res->[3]{result_fomat_options}                //= {};',
+                    '$_w_res->[3]{result_fomat_options}{text}          //= $rfo;',
+                    '$_w_res->[3]{result_fomat_options}{"text-pretty"} //= $rfo;',
                 );
                 $self->unindent;
                 $self->push_lines('}');
