@@ -51,11 +51,11 @@ declare_property(
                     '    $type =~ s/\\*$//;',
                     '    $tct->{$_} = $type;',
                     '}',
-                    'my $tco = [sort {($tablespec->{fields}{$a}{pos} // 9999) <=> ($tablespec->{fields}{$b}{pos} // 9999)} @$fields];',
+                    'my $tco = [sort {($tablespec->{fields}{$a}{pos} // $tablespec->{fields}{$a}{index} // 9999) <=> ($tablespec->{fields}{$b}{pos} // $tablespec->{fields}{$b}{index} // 9999)} @$fields];',
                     'my $rfo = {table_column_orders=>[$tco], table_column_types=>[$tct]};',
-                    '$_w_res->[3]{result_fomat_options}                //= {};',
-                    '$_w_res->[3]{result_fomat_options}{text}          //= $rfo;',
-                    '$_w_res->[3]{result_fomat_options}{"text-pretty"} //= $rfo;',
+                    '$_w_res->[3]{result_format_options}                //= {};',
+                    '$_w_res->[3]{result_format_options}{text}          //= $rfo;',
+                    '$_w_res->[3]{result_format_options}{"text-pretty"} //= $rfo;',
                 );
                 $self->unindent;
                 $self->push_lines('}');
