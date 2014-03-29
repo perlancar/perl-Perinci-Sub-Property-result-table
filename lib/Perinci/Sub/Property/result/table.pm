@@ -33,26 +33,35 @@ declare_property(
                 $self->push_lines(
                     # we are in a local block, so no need to use _w_ prefixes
                     # for vars or even use add_var()
-                    'my $fields;',
                     'last unless ref($_w_res->[2]) eq "ARRAY";',
-                    'my $frow = $_w_res->[2][0];', # deduce type from first row
-                    'if (ref($frow) eq "ARRAY" && $_w_res->[3]{"table.fields"}) {',
-                    '    $fields = $_w_res->[3]{"table.fields"};',
-                    '} elsif (ref($frow) eq "HASH") {',
-                    '    $fields = [keys %$frow];', # XXX should we check from several/all rows to collect more complete keys?
-                    '}',
-                    'last unless $fields;',
+                    'my $firstrow = $_w_res->[2][0] or last;', # deduce type from first row
                     'my $tablespec = '.$self->{_args}{meta_name}.'->{result}{table}{spec} or last;',
                     'my $tct = {};',
-                    'for (@$fields) {',
-                    '    next if defined($tct->{$_});',
-                    '    my $sch = $tablespec->{fields}{$_}{schema} or next;', # field is unknown in table spec
-                    '    my $type = ref($sch) eq "ARRAY" ? $sch->[0] : $sch;',
-                    '    $type =~ s/\\*$//;',
-                    '    $tct->{$_} = $type;',
+                    'my $tco;',
+                    'if (ref($firstrow) eq "ARRAY" && $_w_res->[3]{"table.fields"}) {',
+                    '    my $field_names = $_w_res->[3]{"table.fields"};', # map column\d to field names
+                    '    for (0..@$field_names-1) {',
+                    '        next if defined($tct->{$_});',
+                    '        my $sch = $tablespec->{fields}{$field_names->[$_]}{schema} or next;', # field is unknown in table spec
+                    '        my $type = ref($sch) eq "ARRAY" ? $sch->[0] : $sch;',
+                    '        $type =~ s/\\*$//;',
+                    '        $tct->{"column$_"} = $type;',
+                    '    }',
+                    '} elsif (ref($firstrow) eq "HASH") {',
+                    '    my $fields = [keys %$firstrow];', # XXX should we check from several/all rows to collect more complete keys?
+                    '    $tco = [sort {($tablespec->{fields}{$a}{pos} // $tablespec->{fields}{$a}{index} // 9999) <=> ($tablespec->{fields}{$b}{pos} // $tablespec->{fields}{$b}{index} // 9999)} @$fields];',
+                    '    for (@$fields) {',
+                    '        my $sch = $tablespec->{fields}{$_}{schema} or next;', # field is unknown in table spec
+                    '        my $type = ref($sch) eq "ARRAY" ? $sch->[0] : $sch;',
+                    '        $type =~ s/\\*$//;',
+                    '        $tct->{$_} = $type;',
+                    '    }',
+                    '} else {',
+                    '    last;',
                     '}',
-                    'my $tco = [sort {($tablespec->{fields}{$a}{pos} // $tablespec->{fields}{$a}{index} // 9999) <=> ($tablespec->{fields}{$b}{pos} // $tablespec->{fields}{$b}{index} // 9999)} @$fields];',
-                    'my $rfo = {table_column_orders=>[$tco], table_column_types=>[$tct]};',
+                    'my $rfo = {};',
+                    '$rfo->{table_column_types}  = [$tct] if $tct;',
+                    '$rfo->{table_column_orders} = [$tco] if $tco;',
                     '$_w_res->[3]{result_format_options}                //= {};',
                     '$_w_res->[3]{result_format_options}{text}          //= $rfo;',
                     '$_w_res->[3]{result_format_options}{"text-pretty"} //= $rfo;',
