@@ -17,13 +17,16 @@ my $meta = {
                 fields => {
                     id   => {
                         schema => 'int*',
+                        pos => 0,
                     },
                     name => {
                         schema => 'str*',
+                        pos => 1,
                     },
                     manager => {
                         summary => 'Whether employee is a manager',
                         schema => 'bool*',
+                        pos => 2,
                     },
                 },
                 pk => 'id',
@@ -62,15 +65,40 @@ test_wrap(
     wrap_args   => {sub=>$sub, meta=>$meta},
     calls       => [
         {
-            # currently not added
-            argsr  => [-which=>'array_nohint'],
-            result => [200, "OK", [1, 2, 3]],
+            # currently not added for array, because dfpc might display it in
+            # multicolumns
+            argsr => [-which=>'array_nohint'],
+            res   => [200, "OK", [1, 2, 3]],
         },
         {
-            # currently not added
-            argsr  => [-which=>'array_hint'],
-            result => [200, "OK", [qw/andi budi cinta/],
-                       {"table.fields"=>[qw/name/]}],
+            # currently not added for array, because dfpc might display it in
+            # multicolumns
+            argsr => [-which=>'array_hint'],
+            res   => [200, "OK", [qw/andi budi cinta/],
+                      {"table.fields"=>[qw/name/]}],
+        },
+        {
+            argsr => [-which=>'aoa'],
+            res   => [200, "OK", [[qw/andi 1/], [qw/cinta 0/]],
+                      {
+                          "table.fields"=>[qw/name manager/],
+                          "result_format_options"=>{
+                              "text"       =>{table_column_types=>[{column0=>"str", column1=>"bool"}]},
+                              "text-pretty"=>{table_column_types=>[{column0=>"str", column1=>"bool"}]},
+                          },
+                      },
+                  ],
+        },
+        {
+            argsr => [-which=>'aoh'],
+            res   => [200, "OK", [{name=>"andi",manager=>1}, {name=>"cinta",manager=>0}],
+                      {
+                          "result_format_options"=>{
+                              "text"       =>{table_column_orders=>[[qw/name manager/]], table_column_types=>[{name=>"str", manager=>"bool"}]},
+                              "text-pretty"=>{table_column_orders=>[[qw/name manager/]], table_column_types=>[{name=>"str", manager=>"bool"}]},
+                          },
+                      },
+                  ],
         },
     ],
 );
