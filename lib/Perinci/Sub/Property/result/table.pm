@@ -5,6 +5,8 @@ use strict;
 use warnings;
 #use Log::Any '$log';
 
+use Locale::TextDomain::UTF8 'Perinci-Sub-Property-result-table';
+use Perinci::Object::Metadata;
 use Perinci::Sub::PropertyUtil qw(declare_property);
 
 # VERSION
@@ -73,6 +75,49 @@ declare_property(
             # TODO validate table data, if requested
         },
     },
+    cmdline_help => {
+        meta => {
+            prio => 50,
+        },
+        handler => sub {
+            my ($self, %args) = @_;
+            my $table_spec = $self->{_help_meta}{result}{table}{spec}
+                or return undef;
+            my $text = __("Returns table data. Table fields are as follow:");
+            $text .= "\n\n";
+            my $ff = $table_spec->{fields};
+            # reminder: index property is for older spec, will be removed
+            # someday
+            for my $fn (sort {($ff->{$a}{pos}//$ff->{$a}{index}//0) <=>
+                                  ($ff->{$b}{pos}//$ff->{$b}{index}//0)}
+                            keys %$ff) {
+                my $f  = $ff->{$fn};
+                my $fo = Perinci::Object::Metadata->new($f);
+                my $sum = $fo->langprop("summary");
+                my $type;
+                if ($f->{schema}) {
+                    $type = ref($f->{schema}) eq 'ARRAY' ?
+                                    $f->{schema}[0] : $f->{schema};
+                    $type =~ s/\*$//;
+                }
+                $text .=
+                    join("",
+                         "  - *$fn*",
+                         ($type ? " ($type)" : ""),
+                         $table_spec->{pk} eq $fn ?
+                             " (".__x("ID field").")":"",
+                         $sum ? ": $sum" : "",
+                         "\n\n");
+                my $desc = $fo->langprop("description");
+                if ($desc) {
+                    $desc =~ s/(\r?\n)+\z//;
+                    $desc =~ s/^/    /mg;
+                    $text .= "$desc\n\n";
+                }
+            }
+            $text;
+        },
+    }, # cmdline_help
 );
 
 
@@ -104,6 +149,7 @@ In function L<Rinci> metadata:
                      pos     => 2,
                  },
              },
+             pk => 'name',
          },
          # allow_extra_fields => 0,
          # allow_underscore_fields => 0,
