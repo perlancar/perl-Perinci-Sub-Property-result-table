@@ -194,7 +194,8 @@ validating the table data.
 =item * allow_underscore_fields => BOOL (default: 0)
 
 Like C<allow_extra_fields>, but regulates whether to allow any extra fields
-prefixed by an underscore. Underscore-prefixed keys
+prefixed by an underscore. Underscore-prefixed keys is the DefHash's convention
+of extra keys that can be ignored.
 
 =back
 
