@@ -88,20 +88,21 @@ In function L<Rinci> metadata:
          spec => {
              summary => "Employee's' current salary",
              fields  => {
-             name => {
-                 summary => "Employee's name",
-                 schema  => 'str*',
-                 pos     => 0,
-             },
-             position => {
-                 summary => "Employee's current position",
-                 schema  => 'str*',
-                 pos     => 1,
-             },
-             salary => {
-                 summary => "Employee's current monthly salary",
-                 schema  => 'float*',
-                 pos     => 2,
+                 name => {
+                     summary => "Employee's name",
+                     schema  => 'str*',
+                     pos     => 0,
+                 },
+                 position => {
+                     summary => "Employee's current position",
+                     schema  => 'str*',
+                     pos     => 1,
+                 },
+                 salary => {
+                     summary => "Employee's current monthly salary",
+                     schema  => 'float*',
+                     pos     => 2,
+                 },
              },
          },
          # allow_extra_fields => 0,
