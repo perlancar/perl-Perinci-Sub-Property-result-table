@@ -194,6 +194,9 @@ When your function is run under L<Perinci::CmdLine>, your tables will look
 prettier. This is done via adding C<result_format_options> property to your
 function result metadata, giving hints to the L<Data::Format::Pretty> formatter.
 
+Also when you use --help (--verbose), the table structure is described in the
+Result section.
+
 =item *
 
 (NOT YET IMPLEMENTED) When you generate documentation, the table specification
