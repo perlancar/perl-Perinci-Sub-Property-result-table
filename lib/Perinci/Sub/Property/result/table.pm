@@ -202,6 +202,8 @@ Result section.
 (NOT YET IMPLEMENTED) When you generate documentation, the table specification
 is also included in the documentation.
 
+=item *
+
 (NOT YET IMPLEMENTED, IDEA) The user can also perhaps request the table
 specification, e.g. C<yourfunc --help=result-table-spec>, C<yourfunc
 --result-table-spec>.
