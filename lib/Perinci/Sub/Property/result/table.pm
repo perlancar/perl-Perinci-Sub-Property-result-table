@@ -233,7 +233,7 @@ The value of the C<table> property should be a L<DefHash>. Known properties:
 
 =item * spec => DEFHASH
 
-Required. Table data specification, specified using L<SHARYANTO::TableSpec>.
+Required. Table data specification, specified using L<TableDef>.
 
 =item * allow_extra_fields => BOOL (default: 0)
 
