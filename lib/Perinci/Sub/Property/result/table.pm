@@ -1,5 +1,8 @@
 package Perinci::Sub::Property::result::table;
 
+# DATE
+# VERSION
+
 use 5.010001;
 use strict;
 use warnings;
@@ -8,8 +11,6 @@ use warnings;
 use Locale::TextDomain::UTF8 'Perinci-Sub-Property-result-table';
 use Perinci::Object::Metadata;
 use Perinci::Sub::PropertyUtil qw(declare_property);
-
-# VERSION
 
 declare_property(
     name => 'result/table',
@@ -80,8 +81,9 @@ declare_property(
             prio => 50,
         },
         handler => sub {
-            my ($self, %args) = @_;
-            my $table_spec = $self->{_help_meta}{result}{table}{spec}
+            my ($self, $r) = @_;
+            my $meta = $r->{_help_meta};
+            my $table_spec = $meta->{result}{table}{spec}
                 or return undef;
             my $text = __("Returns table data. Table fields are as follow:");
             $text .= "\n\n";
