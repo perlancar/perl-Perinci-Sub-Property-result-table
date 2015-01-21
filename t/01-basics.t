@@ -68,7 +68,7 @@ test_wrap(
             # currently not added for array, because dfpc might display it in
             # multicolumns
             argsr => [-which=>'array_nohint'],
-            res   => [200, "OK", [1, 2, 3]],
+            res   => [200, "OK", [1, 2, 3], {}],
         },
         {
             # currently not added for array, because dfpc might display it in
