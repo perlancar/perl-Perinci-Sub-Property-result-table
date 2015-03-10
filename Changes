@@ -1,5 +1,11 @@
 Revision history for Perinci-Sub-Property-result-table
 
+0.06    2015-03-10 (PERLANCAR)
+
+	- Change result metadata 'result_format_options' ->
+	  'format_options'.
+
+
 0.05    2015-01-21 (PERLANCAR)
 
 	- No functional changes.

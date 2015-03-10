@@ -61,7 +61,7 @@ my $sub = sub {
     die "BUG: unknown -which";
 };
 test_wrap(
-    name        => 'add result_format_options',
+    name        => 'add format_options',
     wrap_args   => {sub=>$sub, meta=>$meta},
     calls       => [
         {
@@ -82,9 +82,8 @@ test_wrap(
             res   => [200, "OK", [[qw/andi 1/], [qw/cinta 0/]],
                       {
                           "table.fields"=>[qw/name manager/],
-                          "result_format_options"=>{
-                              "text"       =>{table_column_types=>[{column0=>"str", column1=>"bool"}]},
-                              "text-pretty"=>{table_column_types=>[{column0=>"str", column1=>"bool"}]},
+                          "format_options"=>{
+                              "any"       =>{table_column_types=>[{column0=>"str", column1=>"bool"}]},
                           },
                       },
                   ],
@@ -93,9 +92,8 @@ test_wrap(
             argsr => [-which=>'aoh'],
             res   => [200, "OK", [{name=>"andi",manager=>1}, {name=>"cinta",manager=>0}],
                       {
-                          "result_format_options"=>{
-                              "text"       =>{table_column_orders=>[[qw/name manager/]], table_column_types=>[{name=>"str", manager=>"bool"}]},
-                              "text-pretty"=>{table_column_orders=>[[qw/name manager/]], table_column_types=>[{name=>"str", manager=>"bool"}]},
+                          "format_options"=>{
+                              "any"       =>{table_column_orders=>[[qw/name manager/]], table_column_types=>[{name=>"str", manager=>"bool"}]},
                           },
                       },
                   ],
