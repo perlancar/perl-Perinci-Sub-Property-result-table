@@ -26,11 +26,11 @@ declare_property(
             my $v    = $args{new} // $args{value} // {};
             my $meta = $args{meta};
 
-            # add result_format_options
+            # add format_options
             {
                 last if $meta->{result_naked};
                 $self->select_section('after_call_after_res_validation');
-                $self->push_lines('# add result_format_options from result/table hints');
+                $self->push_lines('# add format_options from result/table hints');
                 $self->push_lines('{');
                 $self->indent;
                 $self->push_lines(
@@ -65,9 +65,8 @@ declare_property(
                     'my $rfo = {};',
                     '$rfo->{table_column_types}  = [$tct] if $tct;',
                     '$rfo->{table_column_orders} = [$tco] if $tco;',
-                    '$_w_res->[3]{result_format_options}                //= {};',
-                    '$_w_res->[3]{result_format_options}{text}          //= $rfo;',
-                    '$_w_res->[3]{result_format_options}{"text-pretty"} //= $rfo;',
+                    '$_w_res->[3]{format_options}                //= {};',
+                    '$_w_res->[3]{format_options}{any}           //= $rfo;',
                 );
                 $self->unindent;
                 $self->push_lines('}');
@@ -193,8 +192,8 @@ your function metadata. This module offers several things:
 =item *
 
 When your function is run under L<Perinci::CmdLine>, your tables will look
-prettier. This is done via adding C<result_format_options> property to your
-function result metadata, giving hints to the L<Data::Format::Pretty> formatter.
+prettier. This is done via adding C<format_options> property to your function
+result metadata, giving hints to the L<Data::Format::Pretty> formatter.
 
 Also when you use --help (--verbose), the table structure is described in the
 Result section.
