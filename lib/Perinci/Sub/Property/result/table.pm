@@ -64,9 +64,7 @@ declare_property(
                     '}',
                     'my $rfo = {};',
                     '$rfo->{table_column_types}  = [$tct] if $tct;',
-                    '$rfo->{table_column_orders} = [$tco] if $tco;',
-                    '$_w_res->[3]{format_options}                //= {};',
-                    '$_w_res->[3]{format_options}{any}           //= $rfo;',
+                    '$_w_res->[3]{"table.fields"} = $tco;',
                 );
                 $self->unindent;
                 $self->push_lines('}');
@@ -192,7 +190,7 @@ your function metadata. This module offers several things:
 =item *
 
 When your function is run under L<Perinci::CmdLine>, your tables will look
-prettier. This is done via adding C<format_options> property to your function
+prettier. This is done via adding C<table.fields> attribute to your function
 result metadata, giving hints to the L<Data::Format::Pretty> formatter.
 
 Also when you use --help (--verbose), the table structure is described in the
