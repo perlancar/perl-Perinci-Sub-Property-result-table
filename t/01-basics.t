@@ -71,20 +71,20 @@ test_wrap(
             res   => [200, "OK", [1, 2, 3], {}],
         },
         {
-            # currently not added for array, because dfpc might display it in
-            # multicolumns
             argsr => [-which=>'array_hint'],
             res   => [200, "OK", [qw/andi budi cinta/],
-                      {"table.fields"=>[qw/name/]}],
+                      {
+                          #"table.fields"=>[qw/name manager/],
+                          "table.fields"=>[qw/name/],
+                      },
+                  ],
         },
         {
             argsr => [-which=>'aoa'],
             res   => [200, "OK", [[qw/andi 1/], [qw/cinta 0/]],
                       {
-                          "table.fields"=>[qw/name manager/],
-                          "format_options"=>{
-                              "any"       =>{table_column_types=>[{column0=>"str", column1=>"bool"}]},
-                          },
+                          #"table.fields"=>[qw/name/],
+                          "table.fields"=>undef,
                       },
                   ],
         },
@@ -92,9 +92,7 @@ test_wrap(
             argsr => [-which=>'aoh'],
             res   => [200, "OK", [{name=>"andi",manager=>1}, {name=>"cinta",manager=>0}],
                       {
-                          "format_options"=>{
-                              "any"       =>{table_column_orders=>[[qw/name manager/]], table_column_types=>[{name=>"str", manager=>"bool"}]},
-                          },
+                          'table.fields' => [qw/name manager/],
                       },
                   ],
         },
