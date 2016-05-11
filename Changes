@@ -1,5 +1,12 @@
 Revision history for Perinci-Sub-Property-result-table
 
+0.08    2016-05-11 (PERLANCAR)
+
+	- [dist] Bump prereq version Perinci::Sub::PropertyUtil to 0.11
+	  (incompatible change due to schema for Rinci function now in
+	  Sah::Schema::rinci::function_meta instead of Sah::Schema::Rinci).
+
+
 0.07    2015-09-04 (PERLANCAR)
 
 	- No functional changes.
