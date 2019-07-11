@@ -1,17 +1,17 @@
-0.09    2016-05-12 (PERLANCAR)
+0.09    2016-05-12  Released-By: PERLANCAR
 
 	- [dist] Specify prereq to Perinci::Sub::Normalize 0.18 to force
 	  new version [CT].
 
 
-0.08    2016-05-11 (PERLANCAR)
+0.08    2016-05-11  Released-By: PERLANCAR
 
 	- [dist] Bump prereq version Perinci::Sub::PropertyUtil to 0.11
 	  (incompatible change due to schema for Rinci function now in
 	  Sah::Schema::rinci::function_meta instead of Sah::Schema::Rinci).
 
 
-0.07    2015-09-04 (PERLANCAR)
+0.07    2015-09-04  Released-By: PERLANCAR
 
 	- No functional changes.
 
@@ -20,13 +20,13 @@
 	  requirement.
 
 
-0.06    2015-03-10 (PERLANCAR)
+0.06    2015-03-10  Released-By: PERLANCAR
 
 	- Change result metadata 'result_format_options' ->
 	  'format_options'.
 
 
-0.05    2015-01-21 (PERLANCAR)
+0.05    2015-01-21  Released-By: PERLANCAR
 
 	- No functional changes.
 
@@ -34,7 +34,7 @@
 	  autovivifies result metadata).
 
 
-0.04    2015-01-07 (PERLANCAR)
+0.04    2015-01-07  Released-By: PERLANCAR
 
 	- Adjust to Perinci::CmdLine 1.43.
 
@@ -47,11 +47,11 @@
            TableDef).
 
 
-0.02     2014-04-02 (SHARYANTO)
+0.02     2014-04-02  Released-By: SHARYANTO
 
          - Add hook for Perinci::CmdLine's --help message.
 
 
-0.01     2014-03-29 (SHARYANTO)
+0.01     2014-03-29  Released-By: SHARYANTO
 
          - First release.
